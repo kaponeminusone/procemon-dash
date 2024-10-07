@@ -2,6 +2,7 @@
 INSERT INTO Procesos (id, nombre, num_etapas) 
 VALUES (1, 'Proceso de Ejemplo', 3);
 
+
 -- Insertar etapas para el proceso recién creado
 INSERT INTO Etapas (id, num_etapa, id_proceso) 
 VALUES 
