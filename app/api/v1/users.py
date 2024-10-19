@@ -1,8 +1,8 @@
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from app.db.database import conn
 from app.models.models import Usuario
-from app.schemas.user import User, UserRead
+from app.schemas.user import User, UserRead, UserUpdate
 from typing import List
 
 router = APIRouter()
@@ -18,8 +18,17 @@ async def read_users():
 
     return users_list
 
+@router.get("/{email}", response_model=UserRead)
+async def read_users(email: str):
+    # Ejecuta la consulta y obtén los resultados como un iterable de diccionarios
+    result = conn.execute(users.select().where(users.c.email == email)).mappings().first()
+    # Utiliza model_validate para validar y crear una lista de UserRead
+    user = UserRead.model_validate(result)
+
+    return user
+
 @router.post("/", response_model=UserRead)
-async def create_user(user: User):
+async def create_user(user: User): #TODO: Validacion para error en la inserción
     # Crea un nuevo diccionario para el usuario
     new_user = {
         "id": user.id,
@@ -38,6 +47,25 @@ async def create_user(user: User):
     
     # Valida y retorna el usuario creado como UserRead
     return UserRead.model_validate(created_user)
+
+@router.put("/", response_model=UserRead)
+async def update_user(user: UserUpdate):
+
+    existing_user = conn.execute(users.select().where(users.c.id == user.id)).mappings().first()
+    if not existing_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    update_data = user.model_dump(exclude_unset=True, by_alias=True)
+
+    conn.execute(
+        users.update().where(users.c.id == user.id)
+        .values(update_data)
+        )
+    conn.commit()
+    
+    updated_user = conn.execute(users.select().where(users.c.id == user.id)).mappings().first()
+
+    return UserRead.model_validate(updated_user)
 
 
 # from fastapi import APIRouter

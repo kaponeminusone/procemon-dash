@@ -5,6 +5,7 @@ __pycache__/
 *.pyd
 .DS_Store
 *.db
+*.ini
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

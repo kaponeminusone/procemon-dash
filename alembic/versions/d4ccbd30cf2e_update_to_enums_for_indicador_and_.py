@@ -19,8 +19,8 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     # Crear tipos ENUM si no existen
-    tipo_enum_entrada = postgresql.ENUM('entrada1', 'entrada2', name='tipoenumentrada')
-    tipo_enum_indicador = postgresql.ENUM('indicador1', 'indicador2', name='tipoenumindicador')
+    tipo_enum_entrada = postgresql.ENUM('type1', 'type2', name='tipoenumentrada')
+    tipo_enum_indicador = postgresql.ENUM('type1', 'type2', 'type3', name='tipoenumindicador')
 
     # Crear los tipos en la base de datos
     tipo_enum_entrada.create(op.get_bind(), checkfirst=True)
@@ -49,7 +49,7 @@ def downgrade() -> None:
     op.alter_column(
         'indicadores', 
         'tipo',
-        existing_type=postgresql.ENUM('indicador1', 'indicador2', name='tipoenumindicador'),
+        existing_type=postgresql.ENUM('type1', 'type2', 'type3', name='tipoenumindicador'),
         type_=sa.Enum('type1', 'type2', 'type3', name='tipoenum'),
         existing_nullable=False,
         postgresql_using='tipo::text::tipoenum'
@@ -58,7 +58,7 @@ def downgrade() -> None:
     op.alter_column(
         'entradas', 
         'tipo',
-        existing_type=postgresql.ENUM('entrada1', 'entrada2', name='tipoenumentrada'),
+        existing_type=postgresql.ENUM('type1', 'entrada2', name='tipoenumentrada'),
         type_=sa.Enum('type1', 'type2', 'type3', name='tipoenum'),
         existing_nullable=True,
         postgresql_using='tipo::text::tipoenum'

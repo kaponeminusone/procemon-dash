@@ -7,17 +7,18 @@ Base = declarative_base()
 
 # Define enum types
 class TipoEnum(str, Enum):
-    type1 = 'type1'
-    type2 = 'type2'
-    type3 = 'type3'
+    type1 = 'admin'
+    type2 = 'user'
+    type3 = 'guest'
 
 class TipoEnumIndicador(str, Enum):
-    indicador1 = 'indicador1'
-    indicador2 = 'indicador2'
+    type1 = 'range'
+    type2 = 'checkbox'
+    type3 = 'criteria'
 
 class TipoEnumEntrada(str, Enum):
-    entrada1 = 'entrada1'
-    entrada2 = 'entrada2'
+    type1 = 'int'
+    type2 = 'float'
 
 class Indicadores(Base):
     __tablename__ = 'indicadores'
