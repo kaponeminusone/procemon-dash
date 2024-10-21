@@ -1,3 +1,4 @@
+from enum import Enum
 from pydantic import BaseModel
 from typing import List, Optional
 
@@ -22,21 +23,30 @@ class ProcesoCreate(BaseModel):
     etapas: List[EtapaCreate]
 
 
+class InputType(str, Enum):
+    type1 = "int"
+    type2 = "float"
+
+class IndicatorType(str, Enum):
+    type1 = 'range'
+    type2 = 'checkbox'
+    type3 = 'criteria'
+
 class EntradaResponse(BaseModel):
     id: int
     nombre: str
-    tipo: str  # Asumiendo que tienes un campo "tipo" en el modelo Entradas
+    tipo: InputType  # Asumiendo que tienes un campo "tipo" en el modelo Entradas
 
 class IndicadorResponse(BaseModel):
     id: int
     nombre: str  # Asumiendo que tienes un campo "nombre" en el modelo Indicadores
-    tipo: str  # Asumiendo que tienes un campo "tipo" en el modelo Indicadores
+    tipo: IndicatorType  # Asumiendo que tienes un campo "tipo" en el modelo Indicadores
     entrada_id: int
 
 class SalidaResponse(BaseModel):
     id: int
     nombre: str  # Asumiendo que tienes un campo "nombre" en el modelo Entradas
-    tipo: str  # Asumiendo que tienes un campo "tipo" en el modelo Entradas
+    tipo: InputType  # Asumiendo que tienes un campo "tipo" en el modelo Entradas
 
 class EtapaResponse(BaseModel):
     id: int
@@ -50,3 +60,12 @@ class ProcesoResponse(BaseModel):
     nombre: str
     num_etapas: int
     etapas: List[EtapaResponse]
+
+class ProcesoResponseAll(BaseModel):
+    id: int
+    nombre: str
+    num_etapas: int
+    num_entradas: int
+    num_salidas: int
+    num_indicadores: int
+    

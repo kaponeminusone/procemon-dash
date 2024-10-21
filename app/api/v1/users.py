@@ -31,7 +31,7 @@ async def create_user(user: User, db: Session = Depends(get_db)):
         "email": user.email,
         "tipo": user.role
     }
-    
+
     result = db.execute(users.insert().values(new_user))
     db.commit()
     
