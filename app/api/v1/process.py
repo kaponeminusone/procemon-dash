@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from app.db.database import get_db  # Importa la función desde db.py
-from app.models.models import Procesos, Entradas, Indicadores, Etapas, EtapasEntradas, EtapaIndicadores, EtapasSalidas  # Asegúrate de importar tus modelos correctamente
+from app.models.models import Procesos, Entradas, Indicadores, Etapas, EtapasEntradas, EtapaIndicadores, EtapasSalidas, Registro, RegistroProcesos  # Asegúrate de importar tus modelos correctamente
 from app.schemas.proceso import ProcesoCreate, ProcesoResponse, EtapaResponse, EntradaResponse, IndicadorResponse, ProcesoResponseAll, SalidaResponse  # Importa tus esquemas de Pydantic
 from typing import List
 
@@ -14,6 +14,26 @@ indicadores_table = Indicadores.__table__
 etapas_entradas_table = EtapasEntradas.__table__
 etapas_indicadores_table = EtapaIndicadores.__table__
 etapas_salidas_table = EtapasSalidas.__table__
+registro_table = Registro.__table__
+registro_procesos_table = RegistroProcesos.__table__
+
+def crear_registro_proceso(db: Session, proceso_id: int, descripcion: str, usuario_id: int = 0):
+    # Crear el registro
+    new_registro = {
+        "id_usuario": usuario_id,
+        "descripcion": descripcion
+    }
+    result_registro = db.execute(registro_table.insert().values(new_registro))
+    registro_id = result_registro.inserted_primary_key[0]
+    
+    # Crear el registro para el proceso
+    new_registro_proceso = {
+        "id_registro": registro_id,
+        "id_proceso": proceso_id
+    }
+    db.execute(registro_procesos_table.insert().values(new_registro_proceso))
+    db.commit()
+
 
 @router.post("/")
 async def create_proceso(proceso: ProcesoCreate, db: Session = Depends(get_db)):
@@ -54,6 +74,9 @@ async def create_proceso(proceso: ProcesoCreate, db: Session = Depends(get_db)):
     # Obtiene el proceso creado con las etapas y detalles completos
     created_proceso = db.execute(proceso_table.select().where(proceso_table.c.id == proceso_id)).mappings().first()
 
+    # Registra la creación del proceso
+    crear_registro_proceso(db, proceso_id, f'CREACION DE PROCESO "{created_proceso["nombre"]}"')
+
     # Obtiene las etapas relacionadas
     etapas = db.execute(etapas_table.select().where(etapas_table.c.id_proceso == proceso_id)).mappings().all()
 
@@ -91,9 +114,9 @@ async def create_proceso(proceso: ProcesoCreate, db: Session = Depends(get_db)):
 
     # Crea el objeto de respuesta final
     proceso_response = {
-        "id" : proceso_id,
-        "nombre":created_proceso.nombre,
-        "num_etapas":len(etapas_response),
+        "id": proceso_id,
+        "nombre": created_proceso.nombre,
+        "num_etapas": len(etapas_response),
         "etapas": etapas_response
     }
 

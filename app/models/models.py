@@ -1,4 +1,4 @@
-from sqlalchemy import Column, BigInteger, String, Integer, ForeignKey, Enum as SQLAlchemyEnum, TIMESTAMP
+from sqlalchemy import Column, BigInteger, String, Integer, ForeignKey, Enum as SQLAlchemyEnum, TIMESTAMP, Float
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from enum import Enum
@@ -111,3 +111,35 @@ class RegistroProcesos(Base):
 
 
  #TODO: add Barrel
+
+class ProcesosEjecutados(Base):
+    __tablename__ = 'procesos_ejecutados'
+
+    id = Column(BigInteger, primary_key=True)
+    id_proceso = Column(BigInteger, ForeignKey('procesos.id'), nullable=False)
+    no_conformidades = Column(Integer, default=0)
+    conformidades = Column(Integer, default=0)
+    num_etapas_con_conformidades = Column(Integer, default=0)
+    tasa_de_exito = Column(Float)  # Puedes usar un tipo de dato diferente según tu necesidad
+    cantidad_salida = Column(Integer)
+    cantidad_entrada = Column(Integer)
+    # Otros campos que consideres necesarios, como timestamps para registrar la fecha de ejecución
+
+class Materiales(Base):
+    __tablename__ = 'materiales'
+
+    id = Column(BigInteger, primary_key=True)
+    id_entrada = Column(BigInteger, ForeignKey('entradas.id'), nullable=False)
+    cantidad_entrada = Column(Integer)
+    cantidad_salida = Column(Integer)
+    entrada = relationship('Entradas', backref='materiales')  # Relación hacia las entradas
+
+class RegistroProcesoEjecutado(Base):
+    __tablename__ = 'registro_proceso_ejecutado'
+
+    id_proceso_ejecutado = Column(BigInteger, ForeignKey('procesos_ejecutados.id'), primary_key=True)
+    id_registro = Column(BigInteger, ForeignKey('registro.id'), primary_key=True)
+
+    # Puedes agregar relaciones hacia las otras tablas si es necesario
+    proceso_ejecutado = relationship('ProcesosEjecutados', backref='registros')
+    registro = relationship('Registro', backref='procesos_ejecutados')
