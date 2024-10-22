@@ -18,7 +18,7 @@ class Input(BaseModel):
 class InputRead(BaseModel): #Puede que no sea necesario
     id: int
     name: str = Field(..., alias='nombre', min_length=3, max_length=50)
-    type: InputType = Field(default=InputType.type1, alias='tipo')  
+    type: InputType = Field(default=InputType.type1, alias='tipo')
 
     class Config:
         populate_by_name = True  # Permite usar el nombre de campo original

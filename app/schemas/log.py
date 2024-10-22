@@ -11,3 +11,4 @@ class RegistroRead(BaseModel):
     id_proceso: Optional[int] = None
     id_indicador: Optional[int] = None
     id_entrada: Optional[int] = None
+    id_proceso_ejecutado: Optional[int] = None

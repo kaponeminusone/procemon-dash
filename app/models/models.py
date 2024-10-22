@@ -121,8 +121,8 @@ class ProcesosEjecutados(Base):
     conformidades = Column(Integer, default=0)
     num_etapas_con_conformidades = Column(Integer, default=0)
     tasa_de_exito = Column(Float)  # Puedes usar un tipo de dato diferente según tu necesidad
-    cantidad_salida = Column(Integer)
-    cantidad_entrada = Column(Integer)
+    cantidad_salida = Column(Float)
+    cantidad_entrada = Column(Float)
     # Otros campos que consideres necesarios, como timestamps para registrar la fecha de ejecución
 
 class Materiales(Base):
@@ -130,8 +130,9 @@ class Materiales(Base):
 
     id = Column(BigInteger, primary_key=True)
     id_entrada = Column(BigInteger, ForeignKey('entradas.id'), nullable=False)
-    cantidad_entrada = Column(Integer)
-    cantidad_salida = Column(Integer)
+    cantidad_entrada = Column(Float)
+    cantidad_salida = Column(Float)
+    usos = Column(Integer)
     entrada = relationship('Entradas', backref='materiales')  # Relación hacia las entradas
 
 class RegistroProcesoEjecutado(Base):

@@ -3,7 +3,8 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from typing import List
 from app.db.database import get_db  # Importa la función desde db.py
-from app.models.models import Procesos, Usuario, Entradas, Indicadores, Etapas, Registro, RegistroProcesos, RegistroEntradas, RegistroIndicadores
+from app.models.models import Procesos, ProcesosEjecutados, RegistroProcesoEjecutado, Usuario, Entradas, Indicadores, Etapas, Registro, RegistroProcesos, RegistroEntradas, RegistroIndicadores
+from app.schemas.execution import ProcesoEjecutadoSchema
 from app.schemas.log import RegistroRead  # Asegúrate de importar tus modelos correctamente
 from datetime import datetime, timedelta
 
@@ -19,6 +20,62 @@ registro_table = Registro.__table__
 registro_procesos_table = RegistroProcesos.__table__
 registro_indicador_table = RegistroIndicadores.__table__
 registro_entrada_table = RegistroEntradas.__table__
+procesos_ejecutados_table = ProcesosEjecutados.__table__
+registro_proceso_ejecutado_table = RegistroProcesoEjecutado.__table__
+
+@router.get("/search/process/executed", response_model=List[RegistroRead])
+async def search_procesos_ejecutados(
+    id_proceso: int = None, 
+    id_proceso_ejecutado: int = None, 
+    nombre_proceso: str = None,  # Nuevo parámetro para buscar por nombre
+    db: Session = Depends(get_db)
+):
+    # Base de la consulta para obtener los procesos ejecutados y los registros
+    query = db.query(
+        registro_table.c.id,
+        registro_table.c.id_usuario,
+        registro_table.c.descripcion,
+        registro_table.c.creado,
+        registro_table.c.modificado,
+        registro_proceso_ejecutado_table.c.id_proceso_ejecutado
+    ).join(
+        registro_proceso_ejecutado_table, 
+        registro_table.c.id == registro_proceso_ejecutado_table.c.id_registro
+    ).join(
+        procesos_ejecutados_table,
+        registro_proceso_ejecutado_table.c.id_proceso_ejecutado == procesos_ejecutados_table.c.id
+    ).join(
+        proceso_table,  # Realizamos el JOIN con la tabla de procesos
+        procesos_ejecutados_table.c.id_proceso == proceso_table.c.id
+    )
+
+    # Filtro por id_proceso si se proporciona
+    if id_proceso is not None:
+        query = query.filter(procesos_ejecutados_table.c.id_proceso == id_proceso)
+
+    # Filtro por id_proceso_ejecutado si se proporciona
+    if id_proceso_ejecutado is not None:
+        query = query.filter(procesos_ejecutados_table.c.id == id_proceso_ejecutado)
+
+    # Filtro por nombre_proceso si se proporciona
+    if nombre_proceso is not None:
+        query = query.filter(proceso_table.c.nombre.ilike(f"%{nombre_proceso}%"))
+
+    # Ejecutar la consulta y mapear los resultados
+    result = db.execute(query).mappings()
+
+    registros = []
+    for row in result:
+        registro = RegistroRead.model_validate(row)
+        registro.id_proceso_ejecutado = row.get("id_proceso_ejecutado")
+        registros.append(registro)
+
+    # Si hay registros, devolver la lista; si no, error 404
+    if registros:
+        return registros
+    else:
+        raise HTTPException(status_code=404, detail="No se encontraron procesos ejecutados.")
+
 
 
 @router.get("/search/process/", response_model=List[RegistroRead])
@@ -167,6 +224,7 @@ registro_table = Registro.__table__
 registro_procesos_table = RegistroProcesos.__table__
 registro_indicador_table = RegistroIndicadores.__table__
 registro_entrada_table = RegistroEntradas.__table__
+
 
 @router.get("/search/", response_model=List[RegistroRead])
 async def search_registros(

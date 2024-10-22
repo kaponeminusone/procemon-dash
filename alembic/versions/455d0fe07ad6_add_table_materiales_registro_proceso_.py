@@ -23,8 +23,8 @@ def upgrade() -> None:
     op.create_table('materiales',
     sa.Column('id', sa.BigInteger(), nullable=False),
     sa.Column('id_entrada', sa.BigInteger(), nullable=False),
-    sa.Column('cantidad_entrada', sa.Integer(), nullable=True),
-    sa.Column('cantidad_salida', sa.Integer(), nullable=True),
+    sa.Column('cantidad_entrada', sa.Float(), nullable=True),
+    sa.Column('cantidad_salida', sa.Float(), nullable=True),
     sa.ForeignKeyConstraint(['id_entrada'], ['entradas.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -35,8 +35,8 @@ def upgrade() -> None:
     sa.Column('conformidades', sa.Integer(), nullable=True),
     sa.Column('num_etapas_con_conformidades', sa.Integer(), nullable=True),
     sa.Column('tasa_de_exito', sa.Float(), nullable=True),
-    sa.Column('cantidad_salida', sa.Integer(), nullable=True),
-    sa.Column('cantidad_entrada', sa.Integer(), nullable=True),
+    sa.Column('cantidad_salida', sa.Float(), nullable=True),
+    sa.Column('cantidad_entrada', sa.Float(), nullable=True),
     sa.ForeignKeyConstraint(['id_proceso'], ['procesos.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

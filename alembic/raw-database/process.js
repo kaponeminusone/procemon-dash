@@ -82,13 +82,13 @@ proceso_submited =
         {
           "id": 100,
           "entrada_id": 10,
-          "chekbox": true,
+          "checkbox": true,  // Corregido 'chekbox' a 'checkbox'
           "range": "10-50"
         },
         {
           "id": 101,
           "entrada_id": 10,
-          "checkbox": true,
+          "checkbox": true,  // Corregido 'chekbox' a 'checkbox'
           "criteria": ">300"
         }
       ],
@@ -111,7 +111,7 @@ proceso_submited =
         {
           "id": 101,
           "entrada_id": 11,
-          "chekbox": true,
+          "checkbox": true  // Corregido 'chekbox' a 'checkbox'
         }
       ],
       "salidas": [
@@ -145,6 +145,7 @@ proceso_submited =
     }
   ]
 }
+
 
 
 

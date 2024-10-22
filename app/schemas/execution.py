@@ -54,14 +54,15 @@ class RegistroEjecucionSchema(BaseModel):
 
 class MaterialSchema(BaseModel):
     id: int  # ID del material (id_entrada en tu base de datos)
-    value: int  # Valor que se sumará a cantidad_entrada
+    value: float  # Valor que se sumará a cantidad_entrada
 
 class ProcesoEjecutadoSchema(BaseModel):
     id_proceso: int
+    id_proceso_ejecutado: int
     num_etapas_con_conformidades: int
     tasa_de_exito: float
     no_conformidades: int
     conformidades: int
 
     class Config:
-        orm_mode = True  # Permite trabajar con objetos ORM
+        from_attributes = True  # Permite trabajar con objetos ORM
