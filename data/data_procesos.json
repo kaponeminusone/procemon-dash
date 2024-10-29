@@ -1,0 +1,38 @@
+[
+    {
+        "id_proceso": 4,
+        "id_proceso_ejecutado": 2,
+        "num_etapas": 1,
+        "no_conformes": 3,
+        "conformes": 3,
+        "etapas": [
+            {
+                "num_etapa": 1,
+                "conformes": 2,
+                "no_conformes": 1,
+                "state": false,
+                "entradas": [
+                    {
+                        "id": 10,
+                        "value": 23.0
+                    }
+                ],
+                "indicadores": [
+                    {
+                        "id": 104,
+                        "entrada_id": 10,
+                        "checkbox": false,
+                        "range": "",
+                        "criteria": ""
+                    }
+                ],
+                "salidas": [
+                    {
+                        "id": 14,
+                        "value": 1.0
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -1,0 +1,83 @@
+
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+% Cambiar la fuente por defecto a una más profesional
+\renewcommand{\rmdefault}{ptm} % Cambia a fuente Times
+\renewcommand{\sfdefault}{phv} % Cambia a fuente Helvetica
+
+\begin{document}
+
+% Logo del software
+\begin{center}
+    \includegraphics[width=0.3\textwidth]{logo.jpeg} % Asegúrate que el logo esté en la misma carpeta
+    \\[1em]
+    {\LARGE \textbf{Pepinazo}}
+\end{center}
+
+\vspace{1em}
+
+\noindent \textbf{Motivo:} No se \\[0.5em]
+
+\noindent \textbf{Usuario:} \\
+Nombre: default \\
+Correo: default@example.com \\[0.5em]
+
+\noindent \textbf{Destino:} \\
+Nombres: Nicolas Henao \\
+Correos: nhenaoz@unicartagena.edu.co \\[0.5em]
+
+\vspace{1.5em}
+
+% Tabla con procesos ejecutados
+\noindent \textbf{Procesos Ejecutados:} \\
+\begin{longtable}{|p{0.6\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|}
+    \hline
+    \textbf{Acción} & \textbf{Hora} & \textbf{Usuario} \\
+    \hline
+    \endfirsthead
+    \hline
+    \textbf{Acción} & \textbf{Hora} & \textbf{Usuario} \\
+    \hline
+    \endhead
+    \hline
+    \endfoot
+
+\end{longtable}
+
+\vspace{1.5em}
+
+% Tabla con registros
+\noindent \textbf{Registros:} \\
+\begin{longtable}{|p{0.6\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|}
+    \hline
+    \textbf{Acción} & \textbf{Hora} & \textbf{Usuario} \\
+    \hline
+    \endfirsthead
+    \hline
+    \textbf{Acción} & \textbf{Hora} & \textbf{Usuario} \\
+    \hline
+    \endhead
+    \hline
+    \endfoot
+\textbf{CREACION DE ENTRADA "Petroleo"} & 2024-10-27 10:20:59.406818 & default \\ 
+\textbf{CREACION DE ENTRADA "Pepino"} & 2024-10-27 10:22:14.094739 & default \\ 
+\textbf{CREACION DE INDICADOR "Terminaré hoy?"} & 2024-10-27 10:23:06.137602 & default \\ 
+
+\end{longtable}
+
+\vspace{1.5em}
+
+\noindent \textbf{Notas:} \\ - No se \\
+
+\vspace{4em}
+
+\noindent \textbf{Firma:} \\
+\rule{5cm}{0.4pt} \\ % Línea para firma
+Nombre del Firmante \\
+
+\end{document}
