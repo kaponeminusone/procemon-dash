@@ -309,6 +309,9 @@ async def search_registros(
     else:
         raise HTTPException(status_code=404, detail="No se encontraron registros.")
 
+
+#TODO: id_proceso, id_indicador, id_entrada, id_proceso_ejecutado, por ahora estas son 0 o null.
+
 @router.get("/latest/{size}", response_model=List[RegistroRead])
 async def obtener_ultimos_registros(size: int, db: Session = Depends(get_db)):
     # Verifica que la size sea positiva
@@ -333,3 +336,109 @@ async def obtener_ultimos_registros(size: int, db: Session = Depends(get_db)):
         return []
     
 #TODO: TRADUCIR A UN SOLO IDIOMA LOS PARAMETROS
+
+@router.get("/latest/executed/{size}", response_model=List[RegistroRead])
+async def obtener_ultimos_procesos_ejecutados(size: int, db: Session = Depends(get_db)):
+    # Verifica que la size sea positiva
+    if size <= 0:
+        raise HTTPException(status_code=400, detail="La cantidad debe ser un número positivo.")
+
+    # Realizar la consulta para obtener los últimos procesos ejecutados
+    query = (
+        db.query(
+            registro_table.c.id,
+            registro_table.c.id_usuario,
+            registro_table.c.descripcion,
+            registro_table.c.creado,
+            registro_table.c.modificado,
+            registro_proceso_ejecutado_table.c.id_proceso_ejecutado  # Añadir el id del proceso ejecutado
+        )
+        .join(
+            registro_proceso_ejecutado_table,
+            registro_table.c.id == registro_proceso_ejecutado_table.c.id_registro
+        )
+        .join(
+            procesos_ejecutados_table,
+            registro_proceso_ejecutado_table.c.id_proceso_ejecutado == procesos_ejecutados_table.c.id
+        )
+        .order_by(registro_table.c.creado.desc())  # Ordenar por fecha de creación
+        .limit(size)
+    )
+
+    result = db.execute(query).mappings()
+    registros = []
+    for row in result:
+        registro = RegistroRead.model_validate(row)
+        registro.id_proceso_ejecutado = row.get("id_proceso_ejecutado")  # Asignar el id del proceso ejecutado
+        registros.append(registro)
+
+    if registros:
+        return registros
+    else:
+        raise HTTPException(status_code=404, detail="No se encontraron procesos ejecutados.")
+    
+
+
+@router.get("/latest/executed/definition/{size}")
+async def obtener_ultimos_procesos(size: int, db: Session = Depends(get_db)):
+    # Verifica que la size sea positiva
+    if size <= 0:
+        raise HTTPException(status_code=400, detail="La cantidad debe ser un número positivo.")
+
+    # Realizar la consulta para obtener los últimos procesos ejecutados
+    query = (
+        db.query(
+            procesos_ejecutados_table.c.id.label("id_proceso_ejecutado"),
+            procesos_ejecutados_table.c.no_conformidades,
+            procesos_ejecutados_table.c.conformidades,
+            procesos_ejecutados_table.c.num_etapas_con_conformidades,
+            procesos_ejecutados_table.c.tasa_de_exito,
+            procesos_ejecutados_table.c.cantidad_salida,
+            procesos_ejecutados_table.c.cantidad_entrada,
+            registro_table.c.creado,
+            proceso_table.c.nombre.label("nombre_proceso"),
+            usuario_table.c.id.label("id_usuario"),  # Agregamos el id del usuario
+            usuario_table.c.nombre.label("nombre_usuario")  # Agregamos el nombre del usuario
+        )
+        .join(
+            registro_proceso_ejecutado_table,
+            procesos_ejecutados_table.c.id == registro_proceso_ejecutado_table.c.id_proceso_ejecutado
+        )
+        .join(
+            registro_table,
+            registro_proceso_ejecutado_table.c.id_registro == registro_table.c.id
+        )
+        .join(
+            proceso_table,
+            procesos_ejecutados_table.c.id_proceso == proceso_table.c.id
+        )
+        .join(
+            usuario_table,  # Añadir la unión con la tabla de usuario
+            registro_table.c.id_usuario == usuario_table.c.id
+        )
+        .order_by(registro_table.c.creado.desc())  # Ordenar por fecha de creación
+        .limit(size)
+    )
+
+    result = db.execute(query).mappings()
+    procesos = []
+    for row in result:
+        proceso = {
+            "id_proceso_ejecutado": row.get("id_proceso_ejecutado"),
+            "no_conformidades": row.get("no_conformidades"),
+            "conformidades": row.get("conformidades"),
+            "num_etapas_con_conformidades": row.get("num_etapas_con_conformidades"),
+            "tasa_de_exito": row.get("tasa_de_exito"),
+            "cantidad_salida": row.get("cantidad_salida"),
+            "cantidad_entrada": row.get("cantidad_entrada"),
+            "creado": row.get("creado"),
+            "nombre_proceso": row.get("nombre_proceso"),
+            "id_usuario": row.get("id_usuario"),  # Incluimos el id del usuario
+            "nombre_usuario": row.get("nombre_usuario"),  # Incluimos el nombre del usuario
+        }
+        procesos.append(proceso)
+
+    if procesos:
+        return procesos
+    else:
+        raise HTTPException(status_code=404, detail="No se encontraron procesos.")
