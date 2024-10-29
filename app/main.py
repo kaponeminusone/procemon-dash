@@ -13,7 +13,7 @@ app = FastAPI(title="ProcemonAPI")
 # Configuración de CORS
 origins = [
     "http://localhost:5173",  # Permitir localhost:5173
-    # Puedes agregar más orígenes aquí si es necesario
+    "*",# Puedes agregar más orígenes aquí si es necesario
 ]
 
 app.add_middleware(

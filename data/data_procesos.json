@@ -1,95 +1,34 @@
 [
     {
-        "id_proceso": 1,
-        "id_proceso_ejecutado": 13,
-        "num_etapas": 3,
-        "no_conformes": 5,
-        "conformes": 4,
+        "id_proceso": 4,
+        "id_proceso_ejecutado": 2,
+        "num_etapas": 1,
+        "no_conformes": 3,
+        "conformes": 3,
         "etapas": [
             {
                 "num_etapa": 1,
-                "conformes": 0,
-                "no_conformes": 3,
-                "state": false,
-                "entradas": [
-                    {
-                        "id": 10,
-                        "value": 320.0
-                    }
-                ],
-                "indicadores": [
-                    {
-                        "id": 100,
-                        "entrada_id": 10,
-                        "checkbox": true,
-                        "range": "10-50",
-                        "criteria": null
-                    },
-                    {
-                        "id": 101,
-                        "entrada_id": 10,
-                        "checkbox": true,
-                        "range": null,
-                        "criteria": ">300"
-                    }
-                ],
-                "salidas": [
-                    {
-                        "id": 11,
-                        "value": 40.0
-                    }
-                ]
-            },
-            {
-                "num_etapa": 2,
-                "conformes": 5,
+                "conformes": 2,
                 "no_conformes": 1,
                 "state": false,
                 "entradas": [
                     {
-                        "id": 11,
-                        "value": 100.5
+                        "id": 10,
+                        "value": 23.0
                     }
                 ],
                 "indicadores": [
                     {
-                        "id": 101,
-                        "entrada_id": 11,
-                        "checkbox": true,
-                        "range": null,
-                        "criteria": null
+                        "id": 104,
+                        "entrada_id": 10,
+                        "checkbox": false,
+                        "range": "",
+                        "criteria": ""
                     }
                 ],
                 "salidas": [
                     {
-                        "id": 12,
-                        "value": 20.0
-                    }
-                ]
-            },
-            {
-                "num_etapa": 3,
-                "conformes": 2,
-                "no_conformes": 5,
-                "state": true,
-                "entradas": [
-                    {
-                        "id": 12,
-                        "value": 10.0
-                    }
-                ],
-                "indicadores": [
-                    {
-                        "id": 100,
-                        "entrada_id": 12,
-                        "checkbox": null,
-                        "range": null,
-                        "criteria": "=10"
-                    }
-                ],
-                "salidas": [
-                    {
-                        "id": 13,
+                        "id": 14,
                         "value": 1.0
                     }
                 ]

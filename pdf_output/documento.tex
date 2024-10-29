@@ -1,0 +1,91 @@
+
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+% Cambiar la fuente por defecto a una más profesional
+\renewcommand{\rmdefault}{ptm} % Cambia a fuente Times
+\renewcommand{\sfdefault}{phv} % Cambia a fuente Helvetica
+
+\begin{document}
+
+% Logo del software
+\begin{center}
+    \includegraphics[width=0.3\textwidth]{logo.jpeg} % Asegúrate que el logo esté en la misma carpeta
+    \\[1em]
+    {\LARGE \textbf{Documento Informe}}
+\end{center}
+
+\vspace{1em}
+
+\noindent \textbf{Motivo:} Realizacion irregular \\[0.5em]
+
+\noindent \textbf{Usuario:} \\
+Nombre: default \\
+Correo: default@example.com \\[0.5em]
+
+\noindent \textbf{Destino:} \\
+Nombres: Manolo \\
+Correos: manolo@example.com \\[0.5em]
+
+\vspace{1.5em}
+
+% Tabla con procesos ejecutados
+\noindent \textbf{Procesos Ejecutados:} \\
+\begin{longtable}{|p{0.6\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|}
+    \hline
+    \textbf{Acción} & \textbf{Hora} & \textbf{Usuario} \\
+    \hline
+    \endfirsthead
+    \hline
+    \textbf{Acción} & \textbf{Hora} & \textbf{Usuario} \\
+    \hline
+    \endhead
+    \hline
+    \endfoot
+ \textbf{Ejecución ID 1 de proceso ID 4 con 1 etapas.} &  2024-10-28 23:51:45.727379 &  default \\ 
+ \textbf{Tasa de exito:} 53.225661822295336 & & \\ 
+ \textbf{Registro Asociado:} 16 & & \\ 
+ \hline 
+ \textbf{Ejecución ID 2 de proceso ID 4 con 1 etapas.} &  2024-10-28 23:52:14.294386 &  default \\ 
+ \textbf{Tasa de exito:} 4.068273369477582 & & \\ 
+ \textbf{Registro Asociado:} 17 & & \\ 
+ \hline 
+
+\end{longtable}
+
+\vspace{1.5em}
+
+% Tabla con registros
+\noindent \textbf{Registros:} \\
+\begin{longtable}{|p{0.6\textwidth}|p{0.2\textwidth}|p{0.2\textwidth}|}
+    \hline
+    \textbf{Acción} & \textbf{Hora} & \textbf{Usuario} \\
+    \hline
+    \endfirsthead
+    \hline
+    \textbf{Acción} & \textbf{Hora} & \textbf{Usuario} \\
+    \hline
+    \endhead
+    \hline
+    \endfoot
+\textbf{CREACION DE ENTRADA "ASDASA"} & 2024-10-27 12:44:28.473901 & default \\ 
+\textbf{CREACION DE INDICADOR "Greison esta vivo?"} & 2024-10-27 19:38:39.413683 & default \\ 
+\textbf{CREACION DE ENTRADA "4234"} & 2024-10-28 22:46:26.104321 & default \\ 
+
+\end{longtable}
+
+\vspace{1.5em}
+
+\noindent \textbf{Notas:} \\ - Realizacion irregular \\
+
+\vspace{4em}
+
+\noindent \textbf{Firma:} \\
+\rule{5cm}{0.4pt} \\ % Línea para firma
+Nombre del Firmante \\
+
+\end{document}
