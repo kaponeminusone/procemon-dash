@@ -3,6 +3,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from fastapi.responses import FileResponse
 
+import warnings
+
+# Ignorar todas las advertencias de tipo FutureWarning
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
+
 load_dotenv()  # TODO: Mejorar
 
 from app.api.routes import router_api  # Importa el enrutador central que agrupa todas las rutas
